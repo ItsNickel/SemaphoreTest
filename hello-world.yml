@@ -1,0 +1,19 @@
+---
+- name: Test authenticated Semaphore webhook
+  hosts: local
+  gather_facts: false
+
+  vars:
+    webhook_message: "No webhook message supplied"
+    request_id: "No request ID supplied"
+
+  tasks:
+    - name: Display hello world
+      ansible.builtin.debug:
+        msg: "Hello world from Horse Plinko"
+
+    - name: Display the remote webhook data
+      ansible.builtin.debug:
+        msg:
+          - "Webhook message: {{ webhook_message }}"
+          - "Request ID: {{ request_id }}"
