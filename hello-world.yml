@@ -3,10 +3,6 @@
   hosts: local
   gather_facts: false
 
-  vars:
-    webhook_message: "No webhook message supplied"
-    request_id: "No request ID supplied"
-
   tasks:
     - name: Display hello world
       ansible.builtin.debug:
@@ -15,5 +11,5 @@
     - name: Display the remote webhook data
       ansible.builtin.debug:
         msg:
-          - "Webhook message: {{ webhook_message }}"
-          - "Request ID: {{ request_id }}"
+          - "Webhook message: {{ webhook_message | default('MISSING') }}"
+          - "Request ID: {{ request_id | default('MISSING') }}"
