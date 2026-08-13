@@ -1,14 +1,18 @@
 ---
-- name: Read-only OpenStack test
+- name: Read-only OpenStack server lookup
   hosts: local
   gather_facts: false
 
   tasks:
-    - name: Get OpenStack server information
+    - name: Get information for the requested OpenStack server
       openstack.cloud.server_info:
         cloud: openstack
+        name: "{{ server_name }}"
       register: server_info
 
-    - name: Show discovered servers
+    - name: Show requested server information
       ansible.builtin.debug:
-        msg: "{{ server_info.servers | map(attribute='name') | list }}"
+        msg:
+          - "Requested server: {{ server_name }}"
+          - "Matching servers found: {{ server_info.servers | length }}"
+          - "Server names: {{ server_info.servers | map(attribute='name') | list }}"
