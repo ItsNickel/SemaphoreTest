@@ -13,6 +13,19 @@
     - name: Show requested server information
       ansible.builtin.debug:
         msg:
-          - "Requested server: {{ server_name }}"
-          - "Matching servers found: {{ server_info.servers | length }}"
-          - "Server names: {{ server_info.servers | map(attribute='name') | list }}"
+          - "Name: {{ server_info.servers[0].name }}"
+          - "Status: {{ server_info.servers[0].status }}"
+          - "ID: {{ server_info.servers[0].id }}"
+          - "IPv4: {{ server_info.servers[0].access_ipv4 }}"
+          - "Flavor: {{ server_info.servers[0].flavor.name }}"
+          - "RAM: {{ server_info.servers[0].flavor.ram }} MB"
+          - "vCPUs: {{ server_info.servers[0].flavor.vcpus }}"
+          - "Disk: {{ server_info.servers[0].flavor.disk }} GB"
+          - "Availability Zone: {{ server_info.servers[0].availability_zone }}"
+          - "Created: {{ server_info.servers[0].created_at }}"
+      when: server_info.servers | length > 0
+
+    - name: Server not found
+      ansible.builtin.debug:
+        msg: "No OpenStack server named '{{ server_name }}' was found."
+      when: server_info.servers | length == 0
